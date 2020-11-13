@@ -188,10 +188,11 @@ function heapsort() {
 function quicksort() {
   console.log("quicksort - implement me !");
 
-  csvData = quickSort(csvData);
-  setupDisplay();
-}
+  //csvData = quickSort(csvData);
+  //setupDisplay();
 
+  quicksort2(csvData, 0, csvData.length - 1);
+}
 
 function quickSort(data) {
   if (data.length <= 1) {
@@ -213,6 +214,44 @@ function quickSort(data) {
 
     return newArray.concat(quickSort(left), pivot, quickSort(right));
   }
+}
+
+function partition(items, left, right) {
+  let pivot = items[Math.floor((right + left) / 2)];
+  console.log(Math.floor((right + left) / 2));
+  let i = left;
+  let j = right;
+
+  while (i <= j) {
+    while (quickIsLess(items, i, items.indexOf(pivot))) {
+      i++;
+    }
+    while (quickIsLess(items, items.indexOf(pivot), j)) {
+      j--;
+    }
+    if (i <= j) {
+      swap(items, i, j);
+      i++;
+      j--;
+    }
+  }
+  return i;
+}
+
+function quicksort2(items, left, right) {
+  let index;
+  if (items.length > 1) {
+    index = partition(items, left, right);
+    if (left < index - 1) {
+      console.log("coucou le rappel left");
+      quicksort2(items, left, index - 1);
+    }
+    if (index < right) {
+      console.log("coucou le rappel right");
+      quicksort2(items, index, right);
+    }
+  }
+  return items;
 }
 
 function quick3sort() {
