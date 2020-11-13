@@ -57,6 +57,10 @@ function quickIsLess(data, i, j) {
   return false;
 }
 
+// ---------------------------------------------------
+//             INSERT SORT
+// ---------------------------------------------------
+
 // for each element of the list compare and sort with each element placed after
 function insertsort() {
   console.log("insertsort - implement me !");
@@ -70,6 +74,10 @@ function insertsort() {
     }
   }
 }
+
+// ---------------------------------------------------
+//             SELECTION SORT
+// ---------------------------------------------------
 
 // for each element of the list compare and find the min in the rest of list
 // swap the min with the element compared if necessary
@@ -88,6 +96,10 @@ function selectionsort() {
     swap(csvData, i, min);
   }
 }
+
+// ---------------------------------------------------
+//             BUBBLE SORT
+// ---------------------------------------------------
 
 function bubblesort() {
   console.log("bubblesort - implement me !");
@@ -109,18 +121,9 @@ function bubblesort() {
   }
 }
 
-function insertsortForShell(gap, start) {
-  console.log("insertsort - implement me !");
-
-  let i, j;
-  const len = csvData.length;
-
-  for (i = start; i < len; i += gap) {
-    for (j = i; j > 0 && isLess(j, j - 1); j--) {
-      swap(csvData, j, j - 1);
-    }
-  }
-}
+// ---------------------------------------------------
+//             SHELL SORT
+// ---------------------------------------------------
 
 function shellsort() {
   console.log("shellsort - implement me !");
@@ -137,6 +140,41 @@ function shellsort() {
   }
 }
 
+//InsertsortForShell function for Shellsort
+function insertsortForShell(gap, start) {
+  console.log("insertsort - implement me !");
+
+  let i, j;
+  const len = csvData.length;
+
+  for (i = start; i < len; i += gap) {
+    for (j = i; j > 0 && isLess(j, j - 1); j--) {
+      swap(csvData, j, j - 1);
+    }
+  }
+}
+
+// ---------------------------------------------------
+//             MERGE SORT
+// ---------------------------------------------------
+
+function mergesort(data) {
+  console.log("mergesort - implement me !");
+
+  const len = data.length;
+  const half = Math.floor(len / 2);
+
+  console.log(data);
+  if (len <= 1) return data;
+  let left = data.slice(0, half); // remove elements from 0 to half and replace with nothing -> split the array in two parts left and right
+  let right = data.slice(half);
+  left = mergesort(left);
+  right = mergesort(right);
+
+  return merger(left, right);
+}
+
+//Merger function for Mergesort
 function merger(left, right) {
   let res = [];
   let il = 0;
@@ -165,33 +203,98 @@ function merger(left, right) {
   return res;
 }
 
-function mergesort(data) {
-  console.log("mergesort - implement me !");
-
-  const len = data.length;
-  const half = Math.floor(len / 2);
-
-  console.log(data);
-  if (len <= 1) return data;
-  let left = data.slice(0, half); // remove elements from 0 to half and replace with nothing -> split the array in two parts left and right
-  let right = data.slice(half);
-  left = mergesort(left);
-  right = mergesort(right);
-
-  return merger(left, right);
-}
+// ---------------------------------------------------
+//             HEAP SORT
+// ---------------------------------------------------
 
 function heapsort() {
   console.log("heapsort - implement me !");
+   heapSort(csvData);
 }
+
+function heapSort(data) {
+  let len = data.length;
+  for (let i = Math.floor(len / 2); i >= 0; i--) {
+    maxHeap(data, i, len - 1);
+  }
+
+  for (let i = len - 1; i > 0; i--) {
+    swap(data, i, 0);
+    maxHeap(data, 0, i - 1);
+  }
+}
+
+// MaxHeap function for heapsort
+function maxHeap(tree, node, n) {
+  let k = node;
+  let j = 2 * k;
+
+  while (j <= n) {
+    if (j < n && quickIsLess(tree, j, j + 1)) {
+      j++;
+    }
+
+    if (quickIsLess(tree, k, j)) {
+      swap(tree, k, j);
+      k = j;
+      j = 2 * k;
+    } else {
+      j = n + 1;
+    }
+  }
+}
+
+//++++++++++++++++++++++++++++++
+//***************************************** */
+
+// function heapSort(data) {
+//   len = data.length;
+
+//   for (let i = Math.floor(len / 2); i >= 0; i -= 1) {
+//     maxHeap(data, i);
+//   }
+
+//   for (i = len - 1; i > 0; i--) {
+//     swap(data, 0, i);
+//     len--;
+
+//     maxHeap(data, 0);
+//   }
+//   return data;
+// }
+
+// // MaxHeap function for Heapsort
+// function maxHeap(data, i) {
+//   const len = data.length;
+//   const left = 2 * i + 1;
+//   const right = 2 * i + 2;
+//   let max = i;
+
+//   if (left < len && quickIsLess(data, max, left)) {
+//     max = left;
+//   }
+
+//   if (right < len && quickIsLess(data, max, right)) {
+//     max = right;
+//   }
+
+//   if (max != i) {
+//     swap(data, i, max);
+//     maxHeap(data, max);
+//   }
+// }
+
+// ---------------------------------------------------
+//             QUICK SORT
+// ---------------------------------------------------
 
 function quicksort() {
   console.log("quicksort - implement me !");
 
-  //csvData = quickSort(csvData);
-  //setupDisplay();
+  csvData = quickSort(csvData);
+  setupDisplay();
 
-  quicksort2(csvData, 0, csvData.length - 1);
+  //quicksort2(csvData, 0, csvData.length - 1);
 }
 
 function quickSort(data) {
@@ -210,12 +313,32 @@ function quickSort(data) {
       } else {
         right.push(data[i]);
       }
+      //displayBuffer.push(["compare", i, i]);
     }
 
     return newArray.concat(quickSort(left), pivot, quickSort(right));
   }
 }
 
+//-------------------------------------------------
+
+function quicksort2(items, left, right) {
+  let index;
+  if (items.length > 1) {
+    index = partition(items, left, right);
+    if (left < index - 1) {
+      console.log("coucou le rappel left");
+      quicksort2(items, left, index - 1);
+    }
+    if (index < right) {
+      console.log("coucou le rappel right");
+      quicksort2(items, index, right);
+    }
+  }
+  return items;
+}
+
+// function Partition for Quicksort2
 function partition(items, left, right) {
   let pivot = items[Math.floor((right + left) / 2)];
   console.log(Math.floor((right + left) / 2));
@@ -238,25 +361,15 @@ function partition(items, left, right) {
   return i;
 }
 
-function quicksort2(items, left, right) {
-  let index;
-  if (items.length > 1) {
-    index = partition(items, left, right);
-    if (left < index - 1) {
-      console.log("coucou le rappel left");
-      quicksort2(items, left, index - 1);
-    }
-    if (index < right) {
-      console.log("coucou le rappel right");
-      quicksort2(items, index, right);
-    }
-  }
-  return items;
-}
+//-------------------------------------------------
 
 function quick3sort() {
   console.log("quick3sort - implement me !");
 }
+
+// ---------------------------------------------------
+//             SORT FUNCTIONS CALL
+// ---------------------------------------------------
 
 function sort(algo) {
   switch (algo) {
